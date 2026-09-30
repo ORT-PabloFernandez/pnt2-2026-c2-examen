@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import './airbnblist.css';
 
 export default function AirbnbList() {
     const [listings, setListings] = useState([]);
@@ -27,12 +27,9 @@ export default function AirbnbList() {
         }
     }
 
-    setFavoritos(nuevos);
-    localStorage.setItem('favoritos', JSON.stringify(nuevos))
-}
-
 function verDetalle(item) {
     localStorage.setItem('detalle', JSON.stringify(item));
+    router.push('/airbnb/' + item._id);
 }
 
 function agregarFavorito(item) {
@@ -43,23 +40,26 @@ function agregarFavorito(item) {
 }
 
 return (
-    <div>
-        <h1>Airbnb</h1>
-
+    <div className="airbnb-container">
+        <h1 className="airbnb-title">Airbnb</h1>
+        <div className="airbnb-grid">
         {listings && listings.map((item) =>
-            <div key={item.id}>
-                <img src={item.image.picture_url} />
-                <h3>{item.name}</h3>
-                <p>{item.summary}</p>
+            <div key={item.id} className="airbnb-card">
+                <div className="airbnb-image-container">
+                <img src={item.images.picture_url} />
+                </div>
+                <h3 className="airbnb-name">{item.name}</h3>
+                <p className="airbnb-summary">{item.summary}</p>
                 <a href={item.listing_url}>Ver en Airbnb</a>
-                <button onClick={() => agregarFavorito(item)}>Favorito</button>
-                <button onClick={() => verDetalle(item)}>Ver Detalle</button>
+                <button className="favorite-button" onClick={() => agregarFavorito(item)}>Favorito</button>
+                <button className="back-button" onClick={() => verDetalle(item)}>Ver Detalle</button>
             </div>
         )}
+        </div>
 
-        <button onClick={() => setPage(page - 1)}>Anterior</button>
-        <button onClick={() => setPage(page + 1)}>Siguiente</button>
+        <button className="back-button" onClick={() => setPage(page - 1)}>Anterior</button>
+        <button className="back-button" onClick={() => setPage(page + 1)}>Siguiente</button>
 
     </div>
 )
-
+}
